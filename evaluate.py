@@ -19,6 +19,10 @@ logger = logging.getLogger(__name__)
 
 from agent.LLM.token_utils import is_model_supported
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 @dataclass
 class ExperimentConfig:
