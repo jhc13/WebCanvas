@@ -1,6 +1,7 @@
 from playwright.async_api import Page
 import re
 import toml
+import json
 import json5
 import traceback
 import os
@@ -8,6 +9,7 @@ from typing import List
 
 from agent.Environment.html_env.async_env import AsyncHTMLEnvironment, ActionExecutionError
 from agent.Environment import ActionExecutionError, create_action
+from agent.LLM import save_token_count_to_file
 from agent.Plan import Planning
 from agent.Utils.utils import save_screenshot, is_valid_base64
 from agent.Reward.global_reward import GlobalReward
