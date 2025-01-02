@@ -42,7 +42,8 @@ pricing_models = [
     "gpt-4-1106-preview",
     "gpt-4-vision-preview",
     "gpt-3.5-turbo-0125",
-    "gpt-3.5-turbo-1106"]
+    "gpt-3.5-turbo-1106",
+    "gemini-1.5-flash-002"]
 
 # The price of each model for input and output, the unit is $/token
 # The name of input token price: model_name + "_input_price", such as gpt-4o_input_price
@@ -69,7 +70,9 @@ gpt-4-1106-preview_input_price      = 0.00001
 gpt-4-1106-preview_output_price     = 0.00003
 gpt-4-vision-preview_input_price    = 0.00001
 gpt-4-vision-preview_output_price   = 0.00003
-gpt-3.5-turbo-0125_input_price      = 0.0000005
-gpt-3.5-turbo-0125_output_price     = 0.0000015
-gpt-3.5-turbo-1106_input_price      = 0.000001
-gpt-3.5-turbo-1106_output_price     = 0.000002
+"gpt-3.5-turbo-0125_input_price"    = 0.0000005
+"gpt-3.5-turbo-0125_output_price"   = 0.0000015
+"gpt-3.5-turbo-1106_input_price"    = 0.000001
+"gpt-3.5-turbo-1106_output_price"   = 0.000002
+"gemini-1.5-flash-002_input_price"  = 0.000000075
+"gemini-1.5-flash-002_output_price" = 0.0000003

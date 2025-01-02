@@ -6,7 +6,7 @@ from .token_utils import is_model_supported
 
 def calculation_of_token(
     messages: Union[str, List[Dict]], 
-    model: str = 'gpt-3.5-turbo', 
+    model: str = 'gemini-1.5-flash-002',
     max_tokens: int = 4096
 ) -> int:
     """
