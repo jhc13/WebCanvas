@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from playwright.async_api import Page
 import re
 import toml
@@ -13,7 +15,8 @@ from agent.LLM import save_token_count_to_file
 from agent.Plan import Planning
 from agent.Utils.utils import save_screenshot, is_valid_base64
 from agent.Reward.global_reward import GlobalReward
-from evaluate import FinishTaskEvaluator, TaskLengthEvaluator, URLEvaluator, ElementEvaluator
+from evaluate import (ElementEvaluator, FinishTaskEvaluator,
+                      TaskLengthEvaluator, TextEvaluator, URLEvaluator)
 from logs import logger
 
 
