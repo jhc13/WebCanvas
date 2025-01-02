@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 from agent.LLM.token_utils import is_model_supported
 
 from dotenv import load_dotenv
+import playwright
 
 load_dotenv()
 
@@ -163,7 +164,10 @@ async def run_experiment(task_range, experiment_config):
                        record_time=experiment_config.record_time,
                        token_pricing=experiment_config.config['token_pricing'])
 
-        await env.close()
+        try:
+            await env.close()
+        except playwright._impl._api_types.Error as error:
+            logger.error(error)
         del env
     if is_model_supported(experiment_config.planning_text_model) and is_model_supported(experiment_config.global_reward_text_model):
         with open(token_counts_filename, 'r') as file:
