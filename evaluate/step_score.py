@@ -77,7 +77,8 @@ class URLEvaluator(StepEvaluator):
 class ElementEvaluator(StepEvaluator):
     '''Element evaluation and scoring'''
     @staticmethod
-    def path_exact_match(input_answer, reference_answer, method, html_content, input_netloc, reference_netloc):
+    def path_exact_match(input_answer, reference_answer, method, html_content,
+                         input_netloc=None, reference_netloc=None):
         score = 0
         if method == "xpath":
             if reference_netloc != input_netloc:
@@ -145,7 +146,8 @@ class ElementEvaluator(StepEvaluator):
         return result_score
 
     @staticmethod
-    def element_value_exact_match(input_answer, reference_answer, input_netloc, reference_netloc):
+    def element_value_exact_match(input_answer, reference_answer,
+                                  input_netloc=None, reference_netloc=None):
         if reference_netloc != input_netloc:
             # print("reference_netloc:", reference_netloc,
             #       "input_netloc:", input_netloc)
@@ -155,7 +157,8 @@ class ElementEvaluator(StepEvaluator):
         return result_score
 
     @staticmethod
-    def element_value_include_match(input_answer, reference_answer, input_netloc, reference_netloc):
+    def element_value_include_match(input_answer, reference_answer,
+                                    input_netloc=None, reference_netloc=None):
         if reference_netloc != input_netloc:
             # print("reference_netloc:", reference_netloc,
             #       "input_netloc:", input_netloc)
@@ -165,7 +168,9 @@ class ElementEvaluator(StepEvaluator):
         return result_score
 
     @staticmethod
-    async def element_value_semantic_match(input_answer, semantic_method, input_netloc, reference_netloc=0):
+    async def element_value_semantic_match(input_answer, semantic_method,
+                                           input_netloc=None,
+                                           reference_netloc=None):
         if reference_netloc != input_netloc:
             # print("reference_netloc:", reference_netloc,
             #       "input_netloc:", input_netloc)
