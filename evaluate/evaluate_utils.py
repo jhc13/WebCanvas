@@ -322,7 +322,7 @@ async def step_event_evaluate(page: Page, evaluate_steps, env):
                 )
 
             elif match_function == "element_value_semantic_match":
-                score = ElementEvaluator.element_value_semantic_match(
+                score = await ElementEvaluator.element_value_semantic_match(
                     event["target_value"], evaluate["reference_answer"]
                 )
 
@@ -566,7 +566,7 @@ async def run_task(
                         )
 
                 except Exception as ee:
-                    logger.info(f"Current step evaluate error :{ee}")
+                    logger.error(f"Current step evaluate error :{ee}")
 
                 for evaluate in evaluate_steps:
                     total_step_score += evaluate["score"]
