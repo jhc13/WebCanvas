@@ -36,8 +36,9 @@ def process_messages(messages: list[dict]) -> list[dict]:
 
 
 class GeminiGenerator:
-    def __init__(self, model=None):
+    def __init__(self, model=None, is_json_mode: bool = True):
         self.model = model
+        self.is_json_mode = is_json_mode
         self.pool = ThreadPoolExecutor(max_workers=os.cpu_count() * 2)
 
     async def request(self, messages: list = None, max_tokens: int = 500, temperature: float = 0.7) -> (str, str):
@@ -55,8 +56,13 @@ class GeminiGenerator:
         last_message = chat_history.pop()
         running_model = genai.GenerativeModel(self.model)
         chat = running_model.start_chat(history=chat_history)
+        if self.is_json_mode:
+            response_mime_type_dict = {
+                'response_mime_type': 'application/json'}
+        else:
+            response_mime_type_dict = {}
         response = chat.send_message(
             last_message, generation_config=genai.types.GenerationConfig(
                 max_output_tokens=max_tokens,
-                temperature=temperature))
+                temperature=temperature, **response_mime_type_dict))
         return response.text

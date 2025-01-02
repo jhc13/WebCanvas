@@ -19,10 +19,7 @@ def create_llm_instance(model, json_mode=False, all_json_models=None):
         else:
             return ClaudeGenerator(model)
     elif "gemini" in model:
-        if json_mode:
-            raise ValueError("Gemini does not support JSON mode.")
-        else:
-            return GeminiGenerator(model)
+        return GeminiGenerator(model, json_mode)
     else:
         if json_mode:
             raise ValueError("TogetherAI does not support JSON mode.")
