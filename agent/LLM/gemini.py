@@ -27,6 +27,10 @@ class GeminiGenerator:
     def chat(self, messages, max_tokens=500, temperature=0.7):
         chat_history = []
         for message in messages:
+            role = message['role']
+            # The `system` role is not supported.
+            if role == 'system':
+                role = 'user'
             content = message['content']
             if isinstance(content, str):
                 parts = [content]
@@ -37,7 +41,7 @@ class GeminiGenerator:
                 for content_part in content:
                     if content_part['type'] == 'text':
                         parts.append(content_part['text'])
-            chat_history.append({'role': 'user', 'parts': parts})
+            chat_history.append({'role': role, 'parts': parts})
         last_message = chat_history.pop()
         running_model = genai.GenerativeModel(self.model)
         chat = running_model.start_chat(history=chat_history)
