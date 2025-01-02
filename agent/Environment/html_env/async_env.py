@@ -1,3 +1,4 @@
+import logging
 from typing import Tuple, Any, Union
 
 from playwright.async_api import async_playwright, Page
@@ -6,6 +7,7 @@ from playwright.sync_api import ViewportSize
 from urllib.parse import urlparse, urljoin
 from beartype import beartype
 from difflib import SequenceMatcher
+from tenacity import AsyncRetrying, after_log, wait_exponential_jitter
 
 from PIL import Image
 from io import BytesIO
@@ -79,7 +81,14 @@ class AsyncHTMLEnvironment:
             if browserbase_api_key:
                 logger.info("Attempting to connect to BrowserBase Cloud Environment...")
                 browser_cdp_url = f"wss://connect.browserbase.com?apiKey={browserbase_api_key}"
-                self.browser = await self.playwright.chromium.connect_over_cdp(browser_cdp_url)
+                # Use exponential backoff to retry connections when they fail
+                # from the "Too Many Requests" error.
+                async for attempt in AsyncRetrying(
+                        wait=wait_exponential_jitter(),
+                        after=after_log(logger, logging.WARNING)):
+                    with attempt:
+                        self.browser = (await self.playwright.chromium
+                                        .connect_over_cdp(browser_cdp_url))
                 self.context = self.browser.contexts[0]  # Use the existing context from BrowserBase
                 logger.info("Successfully connected to BrowserBase")
             else:
