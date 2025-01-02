@@ -2,7 +2,22 @@ import json
 from typing import Union, List, Dict, Optional
 
 import tiktoken
+from google.generativeai import GenerativeModel
+
+from .gemini import process_messages
 from .token_utils import is_model_supported
+
+
+def get_gemini_token_count(messages: list[dict] | str, model_id: str) -> int:
+    if isinstance(messages, str):
+        # `messages` is a single string containing the model's response.
+        messages = [{'role': 'model', 'content': messages}]
+    model = GenerativeModel(model_id)
+    processed_messages = process_messages(messages)
+    counts = model.count_tokens(processed_messages)
+    token_count = counts.total_tokens
+    return token_count
+
 
 def calculation_of_token(
     messages: Union[str, List[Dict]], 
@@ -23,6 +38,9 @@ def calculation_of_token(
     if not is_model_supported(model):
         print(f"Message: Model {model} not in pricing configuration. Skipping token calculation.")
         return 0
+
+    if 'gemini' in model:
+        return get_gemini_token_count(messages, model)
 
     try:
         encoding = tiktoken.encoding_for_model(model)

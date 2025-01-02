@@ -9,6 +9,32 @@ from sanic.log import logger
 import google.generativeai as genai
 
 
+def process_messages(messages: list[dict]) -> list[dict]:
+    """
+    Convert messages into the format expected by Gemini. The input messages are
+    a list of dictionaries with keys `role` and `content`. The processed
+    messages are a list of dictionaries with keys `role` and `parts`.
+    """
+    processed_messages = []
+    for message in messages:
+        role = message['role']
+        # The `system` role is not supported.
+        if role == 'system':
+            role = 'user'
+        content = message['content']
+        if isinstance(content, str):
+            parts = [content]
+        else:
+            # `content` is a list of dictionaries with keys `type` and `text`.
+            parts = []
+            for content_part in content:
+                if content_part['type'] == 'text':
+                    parts.append(content_part['text'])
+        processed_message = {'role': role, 'parts': parts}
+        processed_messages.append(processed_message)
+    return processed_messages
+
+
 class GeminiGenerator:
     def __init__(self, model=None):
         self.model = model
@@ -25,23 +51,7 @@ class GeminiGenerator:
             return "", str(e)
 
     def chat(self, messages, max_tokens=500, temperature=0.7):
-        chat_history = []
-        for message in messages:
-            role = message['role']
-            # The `system` role is not supported.
-            if role == 'system':
-                role = 'user'
-            content = message['content']
-            if isinstance(content, str):
-                parts = [content]
-            else:
-                # `content` is a list of dictionaries with keys `type` and
-                # `text`.
-                parts = []
-                for content_part in content:
-                    if content_part['type'] == 'text':
-                        parts.append(content_part['text'])
-            chat_history.append({'role': role, 'parts': parts})
+        chat_history = process_messages(messages)
         last_message = chat_history.pop()
         running_model = genai.GenerativeModel(self.model)
         chat = running_model.start_chat(history=chat_history)
