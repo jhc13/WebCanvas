@@ -228,8 +228,10 @@ if __name__ == "__main__":
     parser.add_argument("--index", type=str, default=-1)
     parser.add_argument("--single_task_name", type=str,
                         default="Find Dota 2 game and add all DLC to cart in steam.")
-    parser.add_argument("--planning_text_model", type=str, default="gpt-4o-mini")
-    parser.add_argument("--global_reward_text_model", type=str, default="gpt-4o-mini")
+    parser.add_argument("--planning_text_model", type=str,
+                        default="gemini-1.5-flash-002")
+    parser.add_argument("--global_reward_text_model", type=str,
+                        default="gemini-1.5-flash-002")
 
     args = parser.parse_args()
 
