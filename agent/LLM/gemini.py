@@ -5,7 +5,6 @@ from functools import partial
 import multiprocessing
 from concurrent.futures import ThreadPoolExecutor
 
-from google.ai.generativelanguage_v1beta import Part
 from sanic.log import logger
 import google.generativeai as genai
 
@@ -30,13 +29,14 @@ class GeminiGenerator:
         for message in messages:
             content = message['content']
             if isinstance(content, str):
-                parts = [Part(text=content)]
+                parts = [content]
             else:
-                # It is a list of dictionaries with keys `type` and `text`.
+                # `content` is a list of dictionaries with keys `type` and
+                # `text`.
                 parts = []
                 for content_part in content:
                     if content_part['type'] == 'text':
-                        parts.append(Part(text=content_part['text']))
+                        parts.append(content_part['text'])
             chat_history.append({'role': 'user', 'parts': parts})
         last_message = chat_history.pop()
         running_model = genai.GenerativeModel(self.model)
