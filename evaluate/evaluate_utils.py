@@ -295,7 +295,7 @@ async def step_event_evaluate(page: Page, evaluate_steps, env):
                     page.url, evaluate["reference_answer"], evaluate["key"]
                 )
             elif match_function == "url_semantic_match":
-                score = URLEvaluator.url_semantic_match(
+                score = await URLEvaluator.url_semantic_match(
                     page.url, evaluate["reference_answer"], evaluate["key"]
                 )
 
