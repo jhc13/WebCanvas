@@ -176,8 +176,8 @@ async def run_experiment(task_range, experiment_config):
 
 
 async def main(global_reward_mode="no_global_reward",
-               planning_text_model="gpt-4-turbo",
-               global_reward_text_model="gpt-4-turbo",
+               planning_text_model="gemini-1.5-flash-002",
+               global_reward_text_model="gemini-1.5-flash-002",
                single_task_name="",
                raw_data_index=-1,
                observation_mode="dom",

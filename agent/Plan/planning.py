@@ -183,7 +183,6 @@ class Planning:
     ):
 
         gpt35 = GPTGenerator(model="gpt-3.5-turbo")
-        gpt4v = GPTGenerator(model="gpt-4-turbo")
 
         all_json_models = config["model"]["json_models"]
         is_json_response = config["model"]["json_model_response"]
@@ -193,10 +192,10 @@ class Planning:
 
         modes = {
             "dom": DomMode(text_model=llm_planning_text),
-            "dom_v_desc": DomVDescMode(visual_model=gpt4v, text_model=llm_planning_text),
-            "vision_to_dom": VisionToDomMode(visual_model=gpt4v, text_model=llm_planning_text),
-            "d_v": DVMode(visual_model=gpt4v),
-            "vision": VisionMode(visual_model=gpt4v)
+            "dom_v_desc": DomVDescMode(visual_model=llm_planning_text, text_model=llm_planning_text),
+            "vision_to_dom": VisionToDomMode(visual_model=llm_planning_text, text_model=llm_planning_text),
+            "d_v": DVMode(visual_model=llm_planning_text),
+            "vision": VisionMode(visual_model=llm_planning_text)
         }
 
         # planning_response_thought, planning_response_action
