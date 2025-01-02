@@ -46,9 +46,8 @@ def validate_config(config, observation_mode, global_reward_mode, observation_mo
     all_json_models = config['model']['json_models']
     interaction_mode = config['steps']['interaction_mode']
 
-    if observation_mode not in ["dom"]:
-        logger.error(
-            "observation mode is not correctly defined! Currently we only support DOM observation.")
+    if observation_mode not in ['dom', 'd_v', 'dom_v_desc']:
+        logger.error("observation mode is not correctly defined!")
         exit()
 
     if interaction_mode not in [True, False]:
@@ -220,6 +219,8 @@ async def main(global_reward_mode="no_global_reward",
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Run the web agent in different modes.")
+    parser.add_argument("--mode", choices=["dom", "d_v", "dom_v_desc"],
+                        default="dom")
     parser.add_argument("--global_reward_mode",
                         choices=["dom_vision_reward", "dom_reward",
                                  "vision_reward", "no_global_reward"],
@@ -232,7 +233,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    asyncio.run(main(global_reward_mode=args.global_reward_mode,
+    asyncio.run(main(observation_mode=args.mode,
+                     global_reward_mode=args.global_reward_mode,
                      planning_text_model=args.planning_text_model,
                      global_reward_text_model=args.global_reward_text_model,
                      single_task_name=args.single_task_name,
