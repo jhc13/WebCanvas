@@ -1,3 +1,6 @@
+from agent.Prompt.base_prompts import BasePrompts
+
+
 class DomVisionPrompts:
 
     example_input = """
@@ -13,7 +16,7 @@ class DomVisionPrompts:
     example_output = '\n```\n{\n  "action": "click",\n  "action_input": "button",\n  "element_id": "236",\n  "description": "Now I\'m on Google\'s main page. I\'m now clicking the button with element_id [236] to see more information."\n}\n```'
     score_output = '\n```\n{\n "score": "10"\n,"description": "According to the previous trajectory, the current thought and the action performed are an important part of completing the target task, so it is very important, so I give 10 points"}\n```'
 
-    d_v_planning_prompt_system = ''''''
+    d_v_planning_prompt_system = BasePrompts.planning_prompt_system
 
     d_v_planning_prompt_user = "The question here is described as \"{{user_request}}\".\n\n"
 
