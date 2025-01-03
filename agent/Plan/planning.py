@@ -150,7 +150,13 @@ class DVMode(InteractionMode):
             f"\033[32mplanning_request:\n{print_limited_json(planning_request, limit=1000)}")
         print("\033[0m")
         planning_response, error_message = await self.visual_model.request(planning_request)
-        return planning_response, error_message, None, None
+        input_token_count = calculation_of_token(planning_request,
+                                                 model=self.visual_model.model)
+        output_token_count = calculation_of_token(
+            planning_response, model=self.visual_model.model)
+        planning_token_count = [input_token_count, output_token_count]
+        return (planning_response, error_message, None, None,
+                planning_token_count)
 
 
 class VisionMode(InteractionMode):
@@ -187,15 +193,17 @@ class Planning:
         all_json_models = config["model"]["json_models"]
         is_json_response = config["model"]["json_model_response"]
 
-        llm_planning_text = create_llm_instance(
-            text_model_name, is_json_response, all_json_models)
+        llm_planning = create_llm_instance(text_model_name, is_json_response,
+                                           all_json_models)
 
         modes = {
-            "dom": DomMode(text_model=llm_planning_text),
-            "dom_v_desc": DomVDescMode(visual_model=llm_planning_text, text_model=llm_planning_text),
-            "vision_to_dom": VisionToDomMode(visual_model=llm_planning_text, text_model=llm_planning_text),
-            "d_v": DVMode(visual_model=llm_planning_text),
-            "vision": VisionMode(visual_model=llm_planning_text)
+            "dom": DomMode(text_model=llm_planning),
+            "dom_v_desc": DomVDescMode(visual_model=llm_planning,
+                                       text_model=llm_planning),
+            "vision_to_dom": VisionToDomMode(visual_model=llm_planning,
+                                             text_model=llm_planning),
+            "d_v": DVMode(visual_model=llm_planning),
+            "vision": VisionMode(visual_model=llm_planning)
         }
 
         # planning_response_thought, planning_response_action

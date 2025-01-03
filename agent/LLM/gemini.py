@@ -30,6 +30,11 @@ def process_messages(messages: list[dict]) -> list[dict]:
             for content_part in content:
                 if content_part['type'] == 'text':
                     parts.append(content_part['text'])
+                elif content_part['type'] == 'image_url':
+                    base64_image = (content_part['image_url']['url']
+                                    .split(',')[1])
+                    parts.append({'mime_type': 'image/jpeg',
+                                  'data': base64_image})
         processed_message = {'role': role, 'parts': parts}
         processed_messages.append(processed_message)
     return processed_messages
