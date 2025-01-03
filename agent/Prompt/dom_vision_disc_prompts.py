@@ -1,7 +1,7 @@
 class DomVisionDiscPrompts:
     dom_vision_disc_planning_prompt_user = "The question here is described as \"{{user_request}}\".\n\n"
 
-    dom_vision_disc_prompt_system2 = """"""
+    dom_vision_disc_prompt_system2 = 'Describe the screenshot of the web page to help fulfill the user request.'
 
     example_input = """
             current web tab name is 'Google'
