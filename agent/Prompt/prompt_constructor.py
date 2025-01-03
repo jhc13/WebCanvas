@@ -239,8 +239,6 @@ class D_VObservationPromptConstructor(BasePromptConstructor):
         # Construct the final message payload
         messages = [{"role": "system", "content": self.prompt_system},
                     {"role": "user", "content": prompt_elements}]
-        # print(prompt_elements)
-        print("messages finished!\n")
         return messages
 
     # Convert previous thought and action into formatted string
