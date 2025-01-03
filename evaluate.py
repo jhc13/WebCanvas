@@ -239,11 +239,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    asyncio.run(main(observation_mode=args.mode,
-                     global_reward_mode=args.global_reward_mode,
+    asyncio.run(main(global_reward_mode=args.global_reward_mode,
                      planning_text_model=args.planning_text_model,
                      global_reward_text_model=args.global_reward_text_model,
                      single_task_name=args.single_task_name,
-                     raw_data_index=args.index
-                     )
-                )
+                     raw_data_index=args.index,
+                     observation_mode=args.mode))
