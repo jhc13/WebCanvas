@@ -176,8 +176,6 @@ class ObservationVisionActPromptConstructor(BasePromptConstructor):
                     {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{observation_vision}"}})
         messages = [{"role": "system", "content": self.prompt_system},
                     {"role": "user", "content": prompt_elements}]
-        # print(prompt_elements)
-        print("messages finished!\n")
         return messages
 
 
@@ -221,18 +219,14 @@ class D_VObservationPromptConstructor(BasePromptConstructor):
     ) -> list:
         is_valid, message = is_valid_base64(
             observation_VforD)
-        print("prompt_constructor.py D_VObservationPromptConstructor:", message, "\n")
+        print("prompt_constructor.py D_VObservationPromptConstructor:", message)
         rendered_prompt = Template(self.prompt_user).render(
             user_request=user_request)
         prompt_elements = [{"type": "text", "text": rendered_prompt}]
         if len(previous_trace) > 0:
-            # history_memory = HistoryMemory(previous_trace=previous_trace)
             trace_prompt = HistoryMemory(
                 previous_trace=previous_trace, reflection=status_description).construct_previous_trace_prompt()
-            # trace_prompt = history_memory.construct_previous_trace_prompt()
             prompt_elements.append({"type": "text", "text": trace_prompt})
-            # if status_description != "":
-            #     prompt_elements.append({"type": "text", "text": f"Task completion description is {status_description}"})
             if feedback != "":
                 prompt_elements.append(
                     {"type": "text", "text": f"There an invalid action description is below:\n {feedback}\n"})
@@ -240,13 +234,6 @@ class D_VObservationPromptConstructor(BasePromptConstructor):
                 {"type": "text", "text": f"\nHere is the accessibility tree that you should refer to for this task:\n{observation}"})
             prompt_elements.append(
                 {"type": "text", "text": "current screenshot is:"})
-            print("len of prompt_elements before observation_VforD:",
-                  len(prompt_elements))
-            prompt_elements_str = json5.dumps(prompt_elements)
-            print("len of prompt_elements_str before observation_VforD:", len(
-                prompt_elements_str)) # This will print the length of prompt_elements converted into JSON string
-            print("len of about gpt token of prompt_elements_str before observation_VforD:", len(
-                prompt_elements_str) / 5.42, "\n")
             prompt_elements.append(
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{observation_VforD}"}})
         # Construct the final message payload
