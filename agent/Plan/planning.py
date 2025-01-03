@@ -46,7 +46,9 @@ class DomVDescMode(InteractionMode):
         if observation_VforD != "":
             vision_desc_request = VisionDisc2PromptConstructor().construct(
                 user_request, observation_VforD)  # vision description request with user_request
-            vision_desc_response, error_message = await self.visual_model.request(vision_desc_request)
+            (vision_desc_response,
+             error_message) = await (self.visual_model.request(
+                vision_desc_request, disable_json_mode=True))
         else:
             vision_desc_response = ""
         print(f"\033[36mvision_disc_response:\n{vision_desc_response}")  # blue

@@ -46,22 +46,27 @@ class GeminiGenerator:
         self.is_json_mode = is_json_mode
         self.pool = ThreadPoolExecutor(max_workers=os.cpu_count() * 2)
 
-    async def request(self, messages: list = None, max_tokens: int = 500, temperature: float = 0.7) -> (str, str):
+    async def request(self, messages: list = None, max_tokens: int = 500,
+                      temperature: float = 0.7,
+                      disable_json_mode: bool = False) -> tuple[str, str]:
         genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
         loop = asyncio.get_event_loop()
         try:
-            response = await loop.run_in_executor(self.pool, partial(self.chat, messages, max_tokens, temperature))
+            response = await loop.run_in_executor(
+                self.pool, partial(self.chat, messages, max_tokens,
+                                   temperature, disable_json_mode))
             return response, ""
         except Exception as e:
             logger.error(f"Error in GeminiGenerator.request: {e}")
             return "", str(e)
 
-    def chat(self, messages, max_tokens=500, temperature=0.7):
+    def chat(self, messages, max_tokens=500, temperature=0.7,
+             disable_json_mode=False):
         chat_history = process_messages(messages)
         last_message = chat_history.pop()
         running_model = genai.GenerativeModel(self.model)
         chat = running_model.start_chat(history=chat_history)
-        if self.is_json_mode:
+        if not disable_json_mode and self.is_json_mode:
             response_mime_type_dict = {
                 'response_mime_type': 'application/json'}
         else:
