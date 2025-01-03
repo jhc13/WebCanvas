@@ -609,8 +609,11 @@ async def run_task(
 
             if mode in ["d_v", "dom_v_desc", "vision_to_dom"]:
                 observation, observation_VforD = await env.get_obs()
-                save_screenshot(mode=mode, record_time=record_time, task_name=task_name,
-                                step_number=num_steps, description="obs", screenshot_base64=observation_VforD)
+                if observation_VforD:
+                    save_screenshot(mode=mode, record_time=record_time,
+                                    task_name=task_name, step_number=num_steps,
+                                    description="obs",
+                                    screenshot_base64=observation_VforD)
             else:
                 observation = await env.get_obs()
 
