@@ -89,7 +89,7 @@ def to_dict(input_string):
 
 def score_rate(score):
     first, second = score.split("/")
-    if second == '0':
+    if int(second) == 0:
         return 0
     return float(first) / float(second)
 
