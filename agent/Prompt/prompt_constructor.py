@@ -232,10 +232,13 @@ class D_VObservationPromptConstructor(BasePromptConstructor):
                     {"type": "text", "text": f"There an invalid action description is below:\n {feedback}\n"})
             prompt_elements.append(
                 {"type": "text", "text": f"\nHere is the accessibility tree that you should refer to for this task:\n{observation}"})
-            prompt_elements.append(
-                {"type": "text", "text": "current screenshot is:"})
-            prompt_elements.append(
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{observation_VforD}"}})
+            if is_valid:
+                prompt_elements.append(
+                    {"type": "text", "text": "current screenshot is:"})
+                prompt_elements.append(
+                    {"type": "image_url",
+                     "image_url": {"url": f"data:image/jpeg;base64,"
+                                          f"{observation_VforD}"}})
         # Construct the final message payload
         messages = [{"role": "system", "content": self.prompt_system},
                     {"role": "user", "content": prompt_elements}]
