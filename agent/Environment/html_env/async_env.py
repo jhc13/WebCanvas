@@ -672,6 +672,8 @@ class AsyncHTMLEnvironment:
             except:
                 logger.info(f'Capture screenshot_bytes failed {i+1} times')
                 await asyncio.sleep(1)
+        else:
+            raise ValueError('Failed to capture screenshot.')
         screenshot = Image.open(BytesIO(screenshot_bytes)).convert("RGB")
         encoded_screenshot = self.encode_and_resize(screenshot)
         is_valid, message = is_valid_base64(
