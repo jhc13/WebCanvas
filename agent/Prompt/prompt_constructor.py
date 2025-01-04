@@ -312,8 +312,9 @@ class RewardPromptConstructor(BasePromptConstructor):
             current_url = current_info.get('current_url', 'not available')
             prompt_elements.append(
                 {"type": "text", "text": f"The current url is {current_url}"})
-        prompt_elements.append(
-            {"type": "text", "text": f"Here is the current accessibility tree that you should refer to:\n{observation}"})
+        if 'dom' in global_reward_mode:
+            prompt_elements.append(
+                {"type": "text", "text": f"Here is the current accessibility tree that you should refer to:\n{observation}"})
         if "vision" in global_reward_mode:
             if "vision_reward" in current_info and current_info['vision_reward']:
                 prompt_elements.append(
