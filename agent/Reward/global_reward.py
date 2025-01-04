@@ -100,18 +100,20 @@ class GlobalReward:
         ground_truth_mode,
         ground_truth_data,
     ):
-
-        gpt4v = GPTGenerator(model="gpt-4-turbo")
-
         all_json_models = config["model"]["json_models"]
         is_json_response = config["model"]["json_model_response"]
 
-        llm_global_reward_text = create_llm_instance(
-            model_name, is_json_response, all_json_models)
-        
-        _, reward_response, reward_token_count = await InteractionMode(text_model=llm_global_reward_text, visual_model=gpt4v).get_global_reward(
-            user_request=user_request, previous_trace=previous_trace, observation=observation,
-            current_info=current_info, ground_truth_mode=ground_truth_mode, global_reward_mode=global_reward_mode,
+        llm_global_reward = create_llm_instance(model_name, is_json_response,
+                                                all_json_models)
+
+        (_, reward_response,
+         reward_token_count) = await InteractionMode(
+            text_model=llm_global_reward,
+            visual_model=llm_global_reward).get_global_reward(
+            user_request=user_request, previous_trace=previous_trace,
+            observation=observation, current_info=current_info,
+            ground_truth_mode=ground_truth_mode,
+            global_reward_mode=global_reward_mode,
             ground_truth_data=ground_truth_data, task_name_id=task_name_id)
         description = reward_response.get(
             "description") if reward_response and reward_response.get("description") else ""
