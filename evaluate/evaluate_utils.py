@@ -630,7 +630,7 @@ async def run_task(
                 vision_reward = await env.capture()
                 save_screenshot(mode=mode, record_time=record_time, task_name=task_name,
                                 step_number=num_steps, description="reward",
-                                screenshot_base64=vision_reward, task_uuid=task_uuid)
+                                screenshot_base64=vision_reward, task_name_id=task_uuid)
                 is_valid, message = is_valid_base64(vision_reward)
                 if not is_valid:
                     invalid_vision_reward_num += 1
