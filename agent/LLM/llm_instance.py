@@ -1,6 +1,7 @@
 from .openai import GPTGenerator, GPTGeneratorWithJSON
 from .claude import ClaudeGenerator
 from .gemini import GeminiGenerator
+from .qwen2_vl import Qwen2VlGenerator
 from .togetherai import TogetherAIGenerator
 
 
@@ -20,6 +21,11 @@ def create_llm_instance(model, json_mode=False, all_json_models=None):
             return ClaudeGenerator(model)
     elif "gemini" in model:
         return GeminiGenerator(model, json_mode)
+    elif "qwen2-vl" in model.lower():
+        if json_mode:
+            raise ValueError("Qwen2-vL does not support JSON mode.")
+        else:
+            return Qwen2VlGenerator(model)
     else:
         if json_mode:
             raise ValueError("TogetherAI does not support JSON mode.")

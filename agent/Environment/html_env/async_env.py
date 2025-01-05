@@ -1,4 +1,5 @@
 import logging
+from json import JSONDecodeError
 from typing import Tuple, Any, Union
 
 from playwright.async_api import async_playwright, Page
@@ -237,8 +238,11 @@ class AsyncHTMLEnvironment:
         try:
             events = []
             if os.path.exists(file_path):
-                with open(file_path, "r", encoding="utf-8") as json_file:
-                    events = json.load(json_file)
+                try:
+                    with open(file_path, "r", encoding="utf-8") as json_file:
+                        events = json.load(json_file)
+                except JSONDecodeError:
+                    pass
             events.append(current_event)
             with open(file_path, "w", encoding="utf-8") as json_file:
                 json.dump(events, json_file, indent=4, ensure_ascii=False)
