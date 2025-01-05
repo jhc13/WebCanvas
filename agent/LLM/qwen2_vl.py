@@ -1,6 +1,6 @@
-import torch
 from qwen_vl_utils import process_vision_info
-from transformers import AutoProcessor, Qwen2VLForConditionalGeneration
+from transformers import (AutoProcessor, BitsAndBytesConfig,
+                          Qwen2VLForConditionalGeneration)
 
 
 def process_messages(messages: list[dict]) -> list[dict]:
@@ -41,9 +41,10 @@ class Qwen2VlGenerator:
         if self.model_:
             return
         self.model = model_id
+        quantization_config = BitsAndBytesConfig(load_in_8bit=True)
         self.model_ = Qwen2VLForConditionalGeneration.from_pretrained(
             model_id, attn_implementation='flash_attention_2',
-            device_map='cuda', torch_dtype=torch.bfloat16)
+            device_map='cuda', quantization_config=quantization_config)
         self.processor = AutoProcessor.from_pretrained(model_id)
 
     async def request(self, messages: list, max_tokens: int = 500,
