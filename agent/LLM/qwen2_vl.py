@@ -30,11 +30,14 @@ class Qwen2VlGenerator:
     model_ = None
 
     def __new__(cls, *args, **kwargs):
+        # If a previous instance exists, return it instead of creating a new
+        # one.
         if cls._instance is None:
             cls._instance = super().__new__(cls)
         return cls._instance
 
     def __init__(self, model_id: str):
+        # Do not load the model if it has already been loaded.
         if self.model_:
             return
         self.model = model_id
