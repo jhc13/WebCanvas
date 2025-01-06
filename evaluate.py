@@ -173,8 +173,10 @@ async def run_experiment(task_range, experiment_config):
         with open(token_counts_filename, 'r') as file:
             data = json.load(file)
         total_token_cost = data.get("total_token_cost", 0)
-
-        get_evaluate_result(experiment_config.config["files"]["out_file_path"], total_token_cost)
+    else:
+        total_token_cost = 0
+    get_evaluate_result(experiment_config.config["files"]["out_file_path"],
+                        total_token_cost)
     logger.info('\033[31mAll tasks finished!\033[0m')
     logger.info('\033[31mPress Enter to exit...\033[0m')
 
