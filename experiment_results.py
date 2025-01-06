@@ -257,7 +257,8 @@ def evaluate(file_path, total_token_cost):
                                          == True].shape[0] / df_evaluate.shape[0]
 
     average_step_score_rate = df_evaluate["task_score_rate"].mean()
-    average_efficiency_score = df_evaluate["efficiency_score"].mean()
+    average_efficiency_score = df_evaluate[
+        df_evaluate["efficiency_score"] != 0]["efficiency_score"].mean()
     if total_token_cost != 0:
         usd_efficiency_score = total_token_cost / key_node_completion_sum
 
