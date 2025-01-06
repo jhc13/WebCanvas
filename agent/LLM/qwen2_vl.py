@@ -48,7 +48,8 @@ class Qwen2VlGenerator:
         self.processor = AutoProcessor.from_pretrained(model_id)
 
     async def request(self, messages: list, max_tokens: int = 500,
-                      temperature: float = 0.7) -> tuple[str, str]:
+                      temperature: float = 0.7,
+                      disable_json_mode: bool = False) -> tuple[str, str]:
         messages = process_messages(messages)
         text_input = self.processor.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=True)
